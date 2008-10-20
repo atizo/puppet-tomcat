@@ -6,7 +6,7 @@ class tomcat::clean {
         ensure => absent,
         purge => true,
         force => true,
-        require => Package['tomcat5'],
+        require => Package['tomcat5-webapps'],
         notify => Service['tomcat5'],
     }
 }
