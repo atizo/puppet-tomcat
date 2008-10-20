@@ -20,13 +20,13 @@ class tomcat {
 class tomcat::base {
     include java
 
-    package{ [ 'tomcat5', 'tomcat5-webapps' ]:
+    package{'tomcat5':
         ensure => present,
     }
     service{tomcat5:
         ensure => running,
         enable => true,
         hasstatus => true,
-        require => [ Package['tomcat5'], Package['tomcat5-webapps'], Package['java-1.6.0-sun'] ],
+        require => [ Package['tomcat5'], Package['java-1.6.0-sun'] ],
     }
 }
