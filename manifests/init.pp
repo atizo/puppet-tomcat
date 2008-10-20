@@ -22,11 +22,12 @@ class tomcat::base {
 
     package{'tomcat5':
         ensure => present,
+        require => Package['java-1.6.0-sun'],
     }
     service{tomcat5:
         ensure => running,
         enable => true,
         hasstatus => true,
-        require => [ Package['tomcat5'], Package['java-1.6.0-sun'] ],
+        require => Package['tomcat5'],
     }
 }
