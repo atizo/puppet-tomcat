@@ -1,5 +1,5 @@
       <Host name="<%= domain %>" debug="0" appBase="webapps" unpackWARs="true">
-          <% domain_aliases.split(':').each do |domain_alias| -%> 
+          <% domainaliases.split(':').each do |domain_alias| -%> 
           <Alias><%= domain_alias %></Alias>
            <% end -%>
           <Logger className="org.apache.catalina.logger.FileLogger" directory="logs" prefix="<%= webappname %>." suffix=".log" timestamp="true"/>

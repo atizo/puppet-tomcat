@@ -2,7 +2,7 @@
 
 define tomcat::vhost(
     $domain,
-    $domain_aliases = ''
+    $domainaliases = ''
 ){
     $webappname = $name
     concatenated_file_part{"tomcat_vhost_${name}":
