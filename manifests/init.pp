@@ -11,6 +11,14 @@
 # the Free Software Foundation.
 #
 
+$TOMCAT_MODSDIR='/var/lib/puppet/modules/tomcat'
+$TOMCAT_VHOSTSDIR="$TOMCAT_MODSDIR/vhosts"
+
+modules_dir { [ "tomcat", "tomcat/vhosts" ]: }
+
+import "defines.pp"
+
+
 class tomcat {
     case $operatingsystem {
         centos: { include tomcat::centos }
@@ -30,6 +38,27 @@ class tomcat::base {
         enable => true,
         hasstatus => true,
         require => Package['tomcat5'],
+    }
+
+    file{"${TOMCAT_MODSDIR}/server_header.xml":
+        source => [ "puppet://$server/files/tomcat/config/${fqdn}/server_header.xml",
+                    "puppet://$server/files/tomcat/config/server_header.xml",
+                    "puppet://$server/tomcat/config/${operatingsystem}/server_header.xml",
+                    "puppet://$server/tomcat/config/server_header.xml" ],
+        owner => root, group => 0, mode => 0600;
+    }
+    file{"${TOMCAT_MODSDIR}/server_footer.xml":
+        source => [ "puppet://$server/files/tomcat/config/${fqdn}/server_footer.xml",
+                    "puppet://$server/files/tomcat/config/server_footer.xml",
+                    "puppet://$server/tomcat/config/${operatingsystem}/server_footer.xml",
+                    "puppet://$server/tomcat/config/server_footer.xml" ],
+        owner => root, group => 0, mode => 0600;
+    }
+    concatenated_file{'/etc/tomcat5/server.xml':
+        dir => "${TOMCAT_VHOSTSDIR}",
+        header => "${TOMCAT_MODSDIR}/server_header.xml",
+        footer => "${TOMCAT_MODSDIR}/server_footer.xml",
+        require => [ File["${TOMCAT_MODSDIR}/server_header.xml"], File["${TOMCAT_MODSDIR}/server_footer.xml"], Package['tomcat5'] ],
     }
 }
 
