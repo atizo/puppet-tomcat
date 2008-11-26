@@ -6,7 +6,7 @@ define tomcat::vhost(
 ){
     $webappname = $name
     concatenated_file_part{"tomcat_vhost_${name}":
-        dir => "${TOMCAT_VHOSTSDIR}",
+        dir => '/var/lib/puppet/modules/tomcat/vhosts',
         content => template('tomcat/vhosts/vhost.erb'),
         owner => root, group => 0, mode => 0600;
     }
