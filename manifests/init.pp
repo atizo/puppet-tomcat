@@ -40,14 +40,14 @@ class tomcat::base {
         require => Package['tomcat5'],
     }
 
-    file{"${TOMCAT_MODSDIR}/server_header.xml":
+    file{"/var/lib/puppet/modules/tomcat/server_header.xml":
         source => [ "puppet://$server/files/tomcat/config/${fqdn}/server_header.xml",
                     "puppet://$server/files/tomcat/config/server_header.xml",
                     "puppet://$server/tomcat/config/${operatingsystem}/server_header.xml",
                     "puppet://$server/tomcat/config/server_header.xml" ],
         owner => root, group => 0, mode => 0600;
     }
-    file{"${TOMCAT_MODSDIR}/server_footer.xml":
+    file{"/var/lib/puppet/modules/tomcat/server_footer.xml":
         source => [ "puppet://$server/files/tomcat/config/${fqdn}/server_footer.xml",
                     "puppet://$server/files/tomcat/config/server_footer.xml",
                     "puppet://$server/tomcat/config/${operatingsystem}/server_footer.xml",
@@ -55,10 +55,10 @@ class tomcat::base {
         owner => root, group => 0, mode => 0600;
     }
     concatenated_file{'/etc/tomcat5/server.xml':
-        dir => "${TOMCAT_VHOSTSDIR}",
-        header => "${TOMCAT_MODSDIR}/server_header.xml",
-        footer => "${TOMCAT_MODSDIR}/server_footer.xml",
-        require => [ File["${TOMCAT_MODSDIR}/server_header.xml"], File["${TOMCAT_MODSDIR}/server_footer.xml"], Package['tomcat5'] ],
+        dir => "/var/lib/puppet/modules/tomcat/vhosts",
+        header => "/var/lib/puppet/modules/tomcat/server_header.xml",
+        footer => "/var/lib/puppet/modules/tomcat/server_footer.xml",
+        require => [ File["/var/lib/puppet/modules/tomcat/server_header.xml"], File["/var/lib/puppet/modules/tomcat/server_footer.xml"], Package['tomcat5'] ],
     }
 }
 
