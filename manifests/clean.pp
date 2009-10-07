@@ -1,6 +1,7 @@
 # manifests/clean.pp
 
 class tomcat::clean {
+    include tomcat
     file{ [ '/var/lib/tomcat5/webapps/jsp-examples',
             '/var/lib/tomcat5/webapps/servlets-examples' ]:
         ensure => absent,
