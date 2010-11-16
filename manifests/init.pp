@@ -15,7 +15,7 @@
 
 class tomcat {
   require java
-  package{'tomcat5']:
+  package{'tomcat5':
     ensure => present,
   }
   service{'tomcat5':
