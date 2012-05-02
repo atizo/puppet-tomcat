@@ -1,7 +1,8 @@
 class tomcat::webapps {
   include tomcat 
-  package{'tomcat5-webapps':
+  package{'tomcat-webapps':
+    name => "tomcat${lsbmajdistrelease}-webapps",
     ensure => present,
-    require => Package['tomcat5'],
+    require => Package['tomcat'],
   }
 }

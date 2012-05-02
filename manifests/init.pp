@@ -15,33 +15,41 @@
 
 class tomcat {
   require java
-  package{'tomcat5':
+
+  # CentOS 5 ships tomcat5 and CentOS tomcat 6
+  # this way we can use lsbmajdistrelease
+
+  package{'tomcat':
+    name => "tomcat${lsbmajdistrelease}",
     ensure => present,
   }
-  service{'tomcat5':
+  service{'tomcat':
+    name => "tomcat${lsbmajdistrelease}",
     ensure => running,
     enable => true,
     hasstatus => true,
-    require => Package['tomcat5'],
+    require => Package['tomcat'],
   }
-  file{'/etc/tomcat5/server.xml':
+  file{'server.xml':
+    path => "/etc/tomcat${lsbmajdistrelease}/server.xml",
     source => [
-      "puppet://$server/modules/site-tomcat/$fqdn/server.xml",
-      "puppet://$server/modules/site-tomcat/server.xml",
-      "puppet://$server/modules/tomcat/server.xml",
+      "puppet://$server/modules/site-tomcat/$fqdn/server${lsbmajdistrelease}.xml",
+      "puppet://$server/modules/site-tomcat/server${lsbmajdistrelease}.xml",
+      "puppet://$server/modules/tomcat/server${lsbmajdistrelease}.xml",
     ],
-    require => Package ['tomcat5'],
-    notify => Service['tomcat5'],
+    require => Package ['tomcat'],
+    notify => Service['tomcat'],
     owner => root, group => 0, mode => 0644;
   }
-  file{'/etc/sysconfig/tomcat5':
+  file{'sysconfig':
+    path => "/etc/sysconfig/tomcat${lsbmajdistrelease}",
     source => [
-      "puppet://$server/modules/site-tomcat/sysconfig/$fqdn/tomcat5",
-      "puppet://$server/modules/site-tomcat/sysconfig/tomcat5",
-      "puppet://$server/modules/tomcat/sysconfig/tomcat5",
+      "puppet://$server/modules/site-tomcat/$fqdn/sysconfig${lsbmajdistrelease}",
+      "puppet://$server/modules/site-tomcat/sysconfig${lsbmajdistrelease}",
+      "puppet://$server/modules/tomcat/sysconfig${lsbmajdistrelease}",
     ],
-    require => Package['tomcat5'],
-    notify => Service['tomcat5'],
+    require => Package['tomcat'],
+    notify => Service['tomcat'],
     owner => root, group => 0, mode => 0644;
   }
 }
